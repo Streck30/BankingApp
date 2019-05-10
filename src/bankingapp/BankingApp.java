@@ -6,6 +6,7 @@
 package bankingapp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -14,31 +15,35 @@ import java.util.Scanner;
  */
 public class BankingApp {
 
-  private static ArrayList<Accounts> accounts;
+  private static HashMap<String, Accounts> accounts;
   /**
    * @param args the command line arguments
    */
   public static void initBankApp(){
-    accounts = new ArrayList<Accounts>();
+    accounts = new HashMap<String, Accounts>();
     loadAllAccounts();
     
   }
   public static void createNewAccount(String un, String pw){
     Accounts account = new Accounts(un, pw);
-    accounts.add(account);
+    accounts.put(un, account);
+  }
+  public static void loadAllAccounts(){
+    
+  }
+  public static Accounts selectAccount(String un){
+    return accounts.get(un);
   }
   public static short checkCredentials(String un, String pw){
-    for(int i = 0; i < accounts.size();i++){
-      if(un.equals(accounts.get(i).getUserName())){
-        if(pw.equals(accounts.get(i).getPassword())){
-          System.out.println("Login Success");
-          return 0;
-        }
-        System.out.println("Incorrect Password");
-        return 1;
+    if(accounts.containsKey(un)){
+      Accounts account = accounts.get(un);
+      if(account.getPassword().equals(pw)){
+        System.out.println("Login Success");
+        return 0;
       }
+      System.out.println("Incorrect Password");
+      return 1;
     }
-    System.out.println("No User with those credentials");
     return 2;
   }
   public static void main(String[] args) {
@@ -65,8 +70,10 @@ public class BankingApp {
         System.out.println("No User found, would you like to make a new account?");
         String newAct = scan.nextLine();
         scan.reset();
-        if(newAct.equals("yes"))
+        if(newAct.equals("yes")){
           createNewAccount(un, pw);
+          break;
+        }
         
         if(newAct.equals("no")){
           System.out.println("Please re-enter username and password");
@@ -79,7 +86,9 @@ public class BankingApp {
         }
       }
     }
+    Accounts account = selectAccount(un);
     while(run){
+      ATM atm = new ATM();
       
     }
   }
