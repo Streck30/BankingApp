@@ -16,6 +16,13 @@ public class Accounts {
   private float AccountBalance;
   private static int numAccounts;
   
+  public Accounts(String un, String pw){
+    this.UserName = un;
+    this.Password = pw;
+    this.AccountNum = numAccounts;
+    this.AccountBalance = 0.00f;
+    numAccounts++;
+  }
   public float getAccountBalance(){
     return AccountBalance;
   }
