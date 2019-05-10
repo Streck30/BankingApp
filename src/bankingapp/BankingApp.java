@@ -50,6 +50,7 @@ public class BankingApp {
     // TODO code application logic here
     initBankApp();
     Scanner scan = new Scanner(System.in);
+    Scanner numScan = new Scanner(System.in);
     boolean run = true;
     System.out.println("Welcome to Bank Account App");
     System.out.print("User Name: ");
@@ -89,6 +90,31 @@ public class BankingApp {
     Accounts account = selectAccount(un);
     while(run){
       ATM atm = new ATM();
+      System.out.println("What would you like to do? Withdraw, Deposit, Check Balance, Exit");
+      String command = scan.nextLine();
+      switch(command){
+        case "Withdraw":
+          System.out.println("Please Enter an amount in dollars and cents");
+          float withdrawAmount = numScan.nextFloat();
+          withdrawAmount = atm.makeWithdrawal(withdrawAmount, account);
+          System.out.printf("Your new balance is: %.2f\n",withdrawAmount);
+          break;
+        case "Deposit":
+          System.out.println("Please Enter an amount in dollars and cents");
+          float depositAmount = numScan.nextFloat();
+          depositAmount = atm.makeDeposit(depositAmount, account);
+          System.out.printf("Your new balance is: %.2f\n",depositAmount);
+          break;
+        case "Check Balance":
+          float balanceAmount = atm.checkBalance(account);
+          System.out.printf("Your balance is: %.2f\n",balanceAmount);
+          break;
+        case "Exit":
+          run = false;
+          System.out.println("Have a nice day");
+          
+          
+      }
       
     }
   }

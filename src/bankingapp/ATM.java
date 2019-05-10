@@ -22,7 +22,7 @@ public class ATM {
     account.setAccountBalance(account.getAccountBalance()+amount);
     return account.getAccountBalance();
   }
-  public static float checkBalance(float amount, Accounts account){
+  public static float checkBalance(Accounts account){
     return account.getAccountBalance();
   }
 }
