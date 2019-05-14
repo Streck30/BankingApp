@@ -24,12 +24,15 @@ public class BankingApp {
   /**
    * @param args the command line arguments
    */
+  
+  //When we first load app, creates the list of accounts and brings up accounts
+  //from the loads method
   public static void initBankApp() {
     accounts = new HashMap<String, Accounts>();
     loadAllAccounts();
 
   }
-
+  //Saves all accounts to a text file
   public static void saveAllAccounts() {
     String toWrite = "";
     try {
@@ -45,12 +48,12 @@ public class BankingApp {
       System.out.println("Write error");
     }
   }
-
+  //Creates a new account with username and password
   public static void createNewAccount(String un, String pw) {
     Accounts account = new Accounts(un, pw);
     accounts.put(un, account);
   }
-
+  //reads all accounts from the text file and adds them into the hashmap
   public static void loadAllAccounts() {
     try {
       BufferedReader read = new BufferedReader(new FileReader("storedaccounts.txt"));
@@ -68,11 +71,13 @@ public class BankingApp {
       System.out.println("Read error");
     }
   }
-
+  //gets the account from the hashmap
   public static Accounts selectAccount(String un) {
     return accounts.get(un);
   }
-
+  //checks to see if the username and password match
+  //returns 0 if success, 1 if correct UN and incorrect PW
+  //2 if no user found
   public static short checkCredentials(String un, String pw) {
     if (accounts.containsKey(un)) {
       Accounts account = accounts.get(un);
@@ -92,6 +97,8 @@ public class BankingApp {
     Scanner scan = new Scanner(System.in);
     Scanner numScan = new Scanner(System.in);
     boolean run = true;
+    
+    //start of application requesting login 
     System.out.println("Welcome to Bank Account App");
     System.out.print("User Name: ");
     String un = scan.nextLine();
@@ -99,6 +106,8 @@ public class BankingApp {
     System.out.print("Password: ");
     String pw = scan.nextLine();
     scan.reset();
+    //whole loop to keep getting credentials until the correct credentials are
+    //found
     short check = checkCredentials(un, pw);
     while (check != 0) {
       if (check == 1) {
@@ -127,6 +136,7 @@ public class BankingApp {
       }
     }
     Accounts account = selectAccount(un);
+    //main logic where you can do bank functions
     while (run) {
       ATM atm = new ATM();
       System.out.println("What would you like to do? Withdraw, Deposit, Check Balance, Exit");
