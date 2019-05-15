@@ -33,10 +33,16 @@ public class ATMGUI extends JFrame implements ActionListener {
     panel.add(userName);
     panel.add(passwordLabel);
     panel.add(password);
+    login.setSize(25, 25);
     add(login, BorderLayout.PAGE_END);
+    login.addActionListener(this);
     setVisible(true);
   }
   public void actionPerformed(ActionEvent e) {
+    String un = userName.getText();
+    String pw = password.getText();
+    BankingApp bank = new BankingApp();
+    bank.mainLogic(un, pw);
     
   }
   

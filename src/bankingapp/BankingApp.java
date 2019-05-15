@@ -91,7 +91,7 @@ public class BankingApp {
     return 2;
   }
 
-  public static void main(String[] args) {
+  public static void mainLogic(String un, String pw) {
     // TODO code application logic here
     initBankApp();
     Scanner scan = new Scanner(System.in);
@@ -99,12 +99,6 @@ public class BankingApp {
     boolean run = true;
     
     //start of application requesting login 
-    System.out.println("Welcome to Bank Account App");
-    System.out.print("User Name: ");
-    String un = scan.nextLine();
-    scan.reset();
-    System.out.print("Password: ");
-    String pw = scan.nextLine();
     scan.reset();
     //whole loop to keep getting credentials until the correct credentials are
     //found
