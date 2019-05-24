@@ -99,10 +99,8 @@ public class BankingApp {
 
   public static short mainLogic(String un, String pw) {
     // TODO code application logic here
-    initBankApp();
     boolean run = true;
     short blah = checkCredentials(un, pw);
-    saveAllAccounts();
     return blah;
     
     //main logic where you can do bank functions

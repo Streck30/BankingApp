@@ -49,12 +49,19 @@ public class ATMGUI extends Application{
     primaryStage.show();
     
   }
+  @Override
+  public void stop(){
+    bank.saveAllAccounts();
+  }
   private TextField userNameField = new TextField();
   private PasswordField passwordField = new PasswordField();
   private Label userNameLabel = new Label("username");
   private Label passwordLabel = new Label("password");
   private Button login = new Button("Login");
+  private static final BankingApp bank = new BankingApp();
+  
   public static void main(String [] args){
+    bank.initBankApp();
     Application.launch(args);
     
   }
@@ -63,33 +70,39 @@ public class ATMGUI extends Application{
     public void handle(ActionEvent e){
       String un = userNameField.getText();
       String pw = passwordField.getText();
-      BankingApp bank = new BankingApp();
-      short check = bank.mainLogic(un, pw);
+      short check = bank.checkCredentials(un, pw);
       switch(check){
         case 0: 
+          //credentials correct
           Alert alert = new Alert(AlertType.INFORMATION);
-          alert.setTitle("Success");
+          alert.setTitle(null);
           alert.setHeaderText(null);
           alert.setContentText("Login Success");
-          alert.showAndWait();
+          alert.show();
+          Accounts currentAccount = bank.selectAccount(un);
           break;
         case 1:
-          Alert alert2 = new Alert(AlertType.INFORMATION);
-          alert2.setTitle("Password");
+          //password incorrect
+          Alert alert2 = new Alert(AlertType.ERROR);
+          alert2.setTitle(null);
           alert2.setHeaderText(null);
           alert2.setContentText("Incorrect Password");
           alert2.showAndWait();
           break;
         case 2:
+          //no user found
           Alert alert3 = new Alert(AlertType.CONFIRMATION);
-          alert3.setTitle("Username");
+          alert3.setTitle(null);
           alert3.setHeaderText(null);
           alert3.setContentText("No user found. \nWould you like to make a new account?");
           Optional<ButtonType> result = alert3.showAndWait();
-          if(result.get() == ButtonType.OK)
+          if(result.get() == ButtonType.OK){
             bank.createNewAccount(un,pw);
-          else{
-            
+            Alert alert4 = new Alert(AlertType.INFORMATION);
+            alert4.setTitle(null);
+            alert4.setHeaderText(null);
+            alert4.setContentText("Account Creation Successful");
+            alert4.showAndWait();
           }
       }
     }
