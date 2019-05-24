@@ -6,15 +6,19 @@
 
 package bankingapp;
 import java.awt.*;
+import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -36,6 +40,8 @@ public class ATMGUI extends Application{
     pane.add(passwordLabel,0,1);
     pane.add(passwordField,1,1);
     pane.add(login,2,1);
+    LoginButtonHandlerClass loginHandler = new LoginButtonHandlerClass();
+    login.setOnAction(loginHandler);
     
     Scene scene = new Scene(pane);
     primaryStage.setTitle("Login");
@@ -58,7 +64,34 @@ public class ATMGUI extends Application{
       String un = userNameField.getText();
       String pw = passwordField.getText();
       BankingApp bank = new BankingApp();
-      short check = bank.checkCredentials(un, pw);
+      short check = bank.mainLogic(un, pw);
+      switch(check){
+        case 0: 
+          Alert alert = new Alert(AlertType.INFORMATION);
+          alert.setTitle("Success");
+          alert.setHeaderText(null);
+          alert.setContentText("Login Success");
+          alert.showAndWait();
+          break;
+        case 1:
+          Alert alert2 = new Alert(AlertType.INFORMATION);
+          alert2.setTitle("Password");
+          alert2.setHeaderText(null);
+          alert2.setContentText("Incorrect Password");
+          alert2.showAndWait();
+          break;
+        case 2:
+          Alert alert3 = new Alert(AlertType.CONFIRMATION);
+          alert3.setTitle("Username");
+          alert3.setHeaderText(null);
+          alert3.setContentText("No user found. \nWould you like to make a new account?");
+          Optional<ButtonType> result = alert3.showAndWait();
+          if(result.get() == ButtonType.OK)
+            bank.createNewAccount(un,pw);
+          else{
+            
+          }
+      }
     }
     
   }

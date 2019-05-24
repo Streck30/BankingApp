@@ -87,83 +87,54 @@ public class BankingApp {
     if (accounts.containsKey(un)) {
       Accounts account = accounts.get(un);
       if (account.getPassword().equals(pw)) {
+        //correct password
         return 0;
       }
-      System.out.println("Incorrect Password");
+      //incorrect password
       return 1;
     }
+    //no username found
     return 2;
   }
 
-  public static void mainLogic(String un, String pw) {
+  public static short mainLogic(String un, String pw) {
     // TODO code application logic here
     initBankApp();
-    Scanner scan = new Scanner(System.in);
-    Scanner numScan = new Scanner(System.in);
     boolean run = true;
-    
-    //start of application requesting login 
-    //whole loop to keep getting credentials until the correct credentials are
-    //found
-    short check = checkCredentials(un, pw);
-    credentialFeedback(check);
-    while (check != 0) {
-      if (check == 1) {
-        System.out.print("Please Enter new password: ");
-        pw = scan.nextLine();
-        scan.reset();
-        check = checkCredentials(un, pw);
-      } else {
-        System.out.println("No User found, would you like to make a new account?");
-        String newAct = scan.nextLine();
-        scan.reset();
-        if (newAct.equals("yes")) {
-          createNewAccount(un, pw);
-          break;
-        }
-
-        if (newAct.equals("no")) {
-          System.out.println("Please re-enter username and password");
-          System.out.print("Username: ");
-          un = scan.nextLine();
-          scan.reset();
-          System.out.println("Password: ");
-          pw = scan.nextLine();
-          scan.reset();
-        }
-      }
-    }
-    Accounts account = selectAccount(un);
-    //main logic where you can do bank functions
-    while (run) {
-      ATM atm = new ATM();
-      System.out.println("What would you like to do? Withdraw, Deposit, Check Balance, Exit");
-      String command = scan.nextLine();
-      switch (command) {
-        case "Withdraw":
-          System.out.println("Please Enter an amount in dollars and cents");
-          float withdrawAmount = numScan.nextFloat();
-          withdrawAmount = atm.makeWithdrawal(withdrawAmount, account);
-          System.out.printf("Your new balance is: %.2f\n", withdrawAmount);
-          break;
-        case "Deposit":
-          System.out.println("Please Enter an amount in dollars and cents");
-          float depositAmount = numScan.nextFloat();
-          depositAmount = atm.makeDeposit(depositAmount, account);
-          System.out.printf("Your new balance is: %.2f\n", depositAmount);
-          break;
-        case "Check Balance":
-          float balanceAmount = atm.checkBalance(account);
-          System.out.printf("Your balance is: %.2f\n", balanceAmount);
-          break;
-        case "Exit":
-          run = false;
-          System.out.println("Have a nice day");
-
-      }
-
-    }
+    short blah = checkCredentials(un, pw);
     saveAllAccounts();
+    return blah;
+    
+    //main logic where you can do bank functions
+//    while (run) {
+//      ATM atm = new ATM();
+//      System.out.println("What would you like to do? Withdraw, Deposit, Check Balance, Exit");
+//      String command = scan.nextLine();
+//      switch (command) {
+//        case "Withdraw":
+//          System.out.println("Please Enter an amount in dollars and cents");
+//          float withdrawAmount = numScan.nextFloat();
+//          withdrawAmount = atm.makeWithdrawal(withdrawAmount, account);
+//          System.out.printf("Your new balance is: %.2f\n", withdrawAmount);
+//          break;
+//        case "Deposit":
+//          System.out.println("Please Enter an amount in dollars and cents");
+//          float depositAmount = numScan.nextFloat();
+//          depositAmount = atm.makeDeposit(depositAmount, account);
+//          System.out.printf("Your new balance is: %.2f\n", depositAmount);
+//          break;
+//        case "Check Balance":
+//          float balanceAmount = atm.checkBalance(account);
+//          System.out.printf("Your balance is: %.2f\n", balanceAmount);
+//          break;
+//        case "Exit":
+//          run = false;
+//          System.out.println("Have a nice day");
+//
+//      }
+//
+//    }
+    
   }
 
 }
