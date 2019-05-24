@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -54,6 +55,9 @@ public class BankingApp {
     accounts.put(un, account);
   }
   //reads all accounts from the text file and adds them into the hashmap
+  public static void credentialFeedback(int check){
+    
+  }
   public static void loadAllAccounts() {
     try {
       BufferedReader read = new BufferedReader(new FileReader("storedaccounts.txt"));
@@ -79,6 +83,7 @@ public class BankingApp {
   //returns 0 if success, 1 if correct UN and incorrect PW
   //2 if no user found
   public static short checkCredentials(String un, String pw) {
+    
     if (accounts.containsKey(un)) {
       Accounts account = accounts.get(un);
       if (account.getPassword().equals(pw)) {
@@ -99,10 +104,10 @@ public class BankingApp {
     boolean run = true;
     
     //start of application requesting login 
-    scan.reset();
     //whole loop to keep getting credentials until the correct credentials are
     //found
     short check = checkCredentials(un, pw);
+    credentialFeedback(check);
     while (check != 0) {
       if (check == 1) {
         System.out.print("Please Enter new password: ");
