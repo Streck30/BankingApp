@@ -5,44 +5,63 @@
  */
 
 package bankingapp;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javafx.event.ActionEvent;
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Streck
  */
-public class ATMGUI extends JFrame implements ActionListener {
-  private TextField userName = new TextField();
-  private JPasswordField password = new JPasswordField();
-  private JLabel userNameLabel = new JLabel("username");
-  private JLabel passwordLabel = new JLabel("password");
-  private JPanel panel = new JPanel(new GridLayout(2,1));
-  private JButton login = new JButton("Login");
-  public static void main(String [] args){
-    ATMGUI atm = new ATMGUI();
-  }
-  public ATMGUI(){
-    setSize(300,100);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLayout(new BorderLayout());
-    add(panel, BorderLayout.CENTER);
-    panel.add(userNameLabel);
-    panel.add(userName);
-    panel.add(passwordLabel);
-    panel.add(password);
-    add(login, BorderLayout.PAGE_END);
-    login.addActionListener(this);
-    setVisible(true);
-  }
-  public void actionPerformed(ActionEvent e) {
-    String un = userName.getText();
-    String pw = password.getText();
-    BankingApp bank = new BankingApp();
-    bank.mainLogic(un, pw);
+public class ATMGUI extends Application{
+  @Override
+  public void start(Stage primaryStage){
+    GridPane pane = new GridPane();
+    pane.setAlignment(Pos.CENTER);
+    pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
+    pane.setHgap(5.5);
+    pane.setVgap(5.5);
+    pane.add(userNameLabel,0,0);
+    pane.add(userNameField, 1,0);
+    pane.add(passwordLabel,0,1);
+    pane.add(passwordField,1,1);
+    pane.add(login,2,1);
+    
+    Scene scene = new Scene(pane);
+    primaryStage.setTitle("Login");
+    primaryStage.setScene(scene);
+    primaryStage.show();
     
   }
+  private TextField userNameField = new TextField();
+  private PasswordField passwordField = new PasswordField();
+  private Label userNameLabel = new Label("username");
+  private Label passwordLabel = new Label("password");
+  private Button login = new Button("Login");
+  public static void main(String [] args){
+    Application.launch(args);
+    
+  }
+  class LoginButtonHandlerClass implements EventHandler<ActionEvent> {
+    @Override
+    public void handle(ActionEvent e){
+      String un = userNameField.getText();
+      String pw = passwordField.getText();
+      BankingApp bank = new BankingApp();
+      short check = bank.checkCredentials(un, pw);
+    }
+    
+  }
+  
   
 }

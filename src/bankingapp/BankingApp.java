@@ -87,7 +87,6 @@ public class BankingApp {
     if (accounts.containsKey(un)) {
       Accounts account = accounts.get(un);
       if (account.getPassword().equals(pw)) {
-        System.out.println("Login Success");
         return 0;
       }
       System.out.println("Incorrect Password");
