@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 public class ATMGUI extends Application{
   @Override
   public void start(Stage primaryStage){
+    //setting up login screen
     GridPane pane = new GridPane();
     pane.setAlignment(Pos.CENTER);
     pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
@@ -42,23 +43,32 @@ public class ATMGUI extends Application{
     pane.add(login,2,1);
     LoginButtonHandlerClass loginHandler = new LoginButtonHandlerClass();
     login.setOnAction(loginHandler);
-    
     Scene scene = new Scene(pane);
     primaryStage.setTitle("Login");
     primaryStage.setScene(scene);
     primaryStage.show();
+    bankAmountField.setEditable(false);
+    
+    
+    
     
   }
   @Override
   public void stop(){
     bank.saveAllAccounts();
   }
+  //all areas for the initial login page
   private TextField userNameField = new TextField();
   private PasswordField passwordField = new PasswordField();
   private Label userNameLabel = new Label("username");
   private Label passwordLabel = new Label("password");
   private Button login = new Button("Login");
   private static final BankingApp bank = new BankingApp();
+  
+  //all areas for the bank function page
+  private Stage bankFunctionStage = new Stage(); 
+  private TextField bankAmountField = new TextField();
+  
   
   public static void main(String [] args){
     bank.initBankApp();
