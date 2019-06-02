@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -47,11 +48,30 @@ public class ATMGUI extends Application{
     primaryStage.setTitle("Login");
     primaryStage.setScene(scene);
     primaryStage.show();
-    bankAmountField.setEditable(false);
+    
+    GridPane pane2 = new GridPane();
+    pane2.setAlignment(Pos.CENTER);
+    pane2.setPadding(new Insets(10,10,10,10));
+    pane2.add(bankAmountField,0,0);
+    buttonPanel.setLayout(new GridLayout(4,3));
+    for(int i = 0; i < buttonText.length; i++){
+      buttons[i] =new Button(buttonText[i]);
+    }
+    for(int i = 0; i < buttonText.length; i++){
+      buttonPanel.add(buttons[i]);
+    }
     
     
     
     
+
+    
+    
+    
+  }
+  public void setNewStage(){
+    
+    bankFunctionStage.show();
   }
   @Override
   public void stop(){
@@ -68,7 +88,9 @@ public class ATMGUI extends Application{
   //all areas for the bank function page
   private Stage bankFunctionStage = new Stage(); 
   private TextField bankAmountField = new TextField();
-  
+  private Panel buttonPanel = new Panel();
+  private static final String [] buttonText = {"7", "8", "9", "4", "5", "6", "1", "2","3", "0", "Withdraw", "Deposit"};
+  private Button [] buttons = new Button[buttonText.length];
   
   public static void main(String [] args){
     bank.initBankApp();
@@ -90,6 +112,7 @@ public class ATMGUI extends Application{
           alert.setContentText("Login Success");
           alert.show();
           Accounts currentAccount = bank.selectAccount(un);
+          setNewStage();
           break;
         case 1:
           //password incorrect
@@ -113,6 +136,7 @@ public class ATMGUI extends Application{
             alert4.setHeaderText(null);
             alert4.setContentText("Account Creation Successful");
             alert4.showAndWait();
+            setNewStage();
           }
       }
     }
