@@ -1,0 +1,1 @@
+This is just a basic banking application for me to make while working with JavaFX, basic java, and JavaDB.  My goal is relearning OOP while also refreshing knowledge on solving various modular issues to make updating and correcting simple and quick.  
