@@ -44,8 +44,8 @@ public class ATMGUI extends Application {
     pane.add(passwordLabel, 0, 1);
     pane.add(passwordField, 1, 1);
     pane.add(login, 2, 1);
-    LoginButtonHandlerClass loginHandler = new LoginButtonHandlerClass();
-    login.setOnAction(loginHandler);
+    ButtonHandlerClass buttonHandler = new ButtonHandlerClass();
+    login.setOnAction(buttonHandler);
     Scene scene = new Scene(pane);
     primaryStage.setTitle("Login");
     primaryStage.setScene(scene);
@@ -62,7 +62,7 @@ public class ATMGUI extends Application {
       buttons[i] = new Button(buttonText[i]);
     }
     for(int i = 0; i < buttons.length;i++){
-      buttons[i].setOnAction(loginHandler);
+      buttons[i].setOnAction(buttonHandler);
     }
     pane2.add(buttons[10], 2, 1);
     for (int i = 0; i < buttonText.length - 5; i++) {
@@ -84,6 +84,13 @@ public class ATMGUI extends Application {
 
     bankFunctionStage.show();
 
+  }
+  public void createAlert(String message, AlertType alertType){
+    Alert alert = new Alert(alertType);
+    alert.setTitle(null);
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.show();
   }
 
   @Override
@@ -116,7 +123,7 @@ public class ATMGUI extends Application {
 
   }
 
-  class LoginButtonHandlerClass implements EventHandler<ActionEvent> {
+  class ButtonHandlerClass implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent e) {
@@ -127,23 +134,15 @@ public class ATMGUI extends Application {
         switch (check) {
           case 0:
             //credentials correct
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle(null);
-            alert.setHeaderText(null);
-            alert.setContentText("Login Success");
             currentAccount = bank.selectAccount(un);           
             setNewStage();
             userNameField.setText("");
             passwordField.setText("");
-            alert.show();
+            createAlert("Login Success",AlertType.INFORMATION);
             break;
           case 1:
             //password incorrect
-            Alert alert2 = new Alert(AlertType.ERROR);
-            alert2.setTitle(null);
-            alert2.setHeaderText(null);
-            alert2.setContentText("Incorrect Password");
-            alert2.showAndWait();
+            createAlert("Incorrect Password", AlertType.ERROR);
             passwordField.setText("");
             break;
           case 2:
@@ -172,6 +171,9 @@ public class ATMGUI extends Application {
         if (e.getSource() == buttons[buttonNums]) {
           toAddSub.setText(toAddSub.getText() + buttonText[buttonNums]);
         }
+        if(toAddSub.getText().length()==1){
+          toAddSub.setText(".0"+toAddSub.getText());
+        }
       }
       //the button actions for the delete button
       if (e.getSource() == buttons[10]) {
@@ -182,28 +184,16 @@ public class ATMGUI extends Application {
       //the button action for the withdrawal button
       if(e.getSource() == buttons[11]){
         if(toAddSub.getText().equals("")){
-          Alert noNumberAlert = new Alert(AlertType.ERROR);
-          noNumberAlert.setTitle(null);
-          noNumberAlert.setHeaderText(null);
-          noNumberAlert.setContentText("Please put a number to Withdraw");
-          noNumberAlert.showAndWait();
+          createAlert("Please put a number to Withdraw", AlertType.ERROR);
           return;
         }
         float atmCheck = atm.makeWithdrawal(Float.parseFloat(toAddSub.getText()),currentAccount );
         toAddSub.setText("");
         if(atmCheck == 0){
-          Alert WithdrawAlertEmpty = new Alert(AlertType.ERROR);
-          WithdrawAlertEmpty.setTitle(null);
-          WithdrawAlertEmpty.setHeaderText(null);
-          WithdrawAlertEmpty.setContentText("Insufficient funds");
-          WithdrawAlertEmpty.showAndWait();
+          createAlert("Insufficient funds", AlertType.ERROR);
         }
         else{
-          Alert WithdrawAlert = new Alert(AlertType.INFORMATION);
-          WithdrawAlert.setTitle(null);
-          WithdrawAlert.setHeaderText(null);
-          WithdrawAlert.setContentText(String.format("Successfully Withdrew: $%.2f", atmCheck));
-          WithdrawAlert.showAndWait();
+          createAlert(String.format("Successfully Withdrew: $%.2f", atmCheck),AlertType.INFORMATION);
           bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
           
         }
@@ -212,30 +202,18 @@ public class ATMGUI extends Application {
       //the button action for the deposit button
       if(e.getSource() == buttons[12]){
         if(toAddSub.getText().equals("")){
-          Alert noNumberAlert = new Alert(AlertType.ERROR);
-          noNumberAlert.setTitle(null);
-          noNumberAlert.setHeaderText(null);
-          noNumberAlert.setContentText("Please put a number to Deposit");
-          noNumberAlert.showAndWait();
+          createAlert("Please put a number to Deposit",AlertType.ERROR);
           return;
         }
         float depositCheck = atm.makeDeposit(Float.parseFloat(toAddSub.getText()),currentAccount );
         toAddSub.setText("");
         
-        Alert DepositAlert = new Alert(AlertType.INFORMATION);
-        DepositAlert.setTitle(null);
-        DepositAlert.setHeaderText(null);
-        DepositAlert.setContentText(String.format("Successfully Deposited $%.2f", depositCheck));
-        DepositAlert.showAndWait();
+        createAlert(String.format("Successfully Deposited $%.2f", depositCheck),AlertType.INFORMATION);
         bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
         
       }
       if(e.getSource()==buttons[13]){
-        Alert logoutAlert = new Alert(AlertType.INFORMATION);
-        logoutAlert.setTitle(null);
-        logoutAlert.setHeaderText(null);
-        logoutAlert.setContentText("Logout Successful");
-        logoutAlert.showAndWait();
+        createAlert("Logout Successful", AlertType.INFORMATION);
         bankFunctionStage.hide();
       }
 
