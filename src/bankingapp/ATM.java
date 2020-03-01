@@ -16,11 +16,11 @@ public class ATM {
       return 0;
     }
     account.setAccountBalance(account.getAccountBalance()-amount);
-    return account.getAccountBalance();
+    return amount;
   }
   public static float makeDeposit(float amount, Accounts account){
     account.setAccountBalance(account.getAccountBalance()+amount);
-    return account.getAccountBalance();
+    return amount;
   }
   public static float checkBalance(Accounts account){
     return account.getAccountBalance();
