@@ -53,13 +53,19 @@ public class ATMGUI extends Application{
     pane2.setAlignment(Pos.CENTER);
     pane2.setPadding(new Insets(10,10,10,10));
     pane2.add(bankAmountField,0,0);
-    buttonPanel.setLayout(new GridLayout(4,3));
+    pane2.add(AccountNumberField,1,0);
     for(int i = 0; i < buttonText.length; i++){
       buttons[i] =new Button(buttonText[i]);
     }
-    for(int i = 0; i < buttonText.length; i++){
-      buttonPanel.add(buttons[i]);
+    for(int i = 0; i < buttonText.length -3; i++){
+      pane2.add(buttons[i],i%3,i/3+1);
     }
+    for(int i = 0; i < 3; i++){
+      pane2.add(buttons[i+10],i,4);
+    }
+    Scene scene2 = new Scene(pane2);
+    bankFunctionStage.setScene(scene2);
+    
     
     
     
@@ -69,9 +75,15 @@ public class ATMGUI extends Application{
     
     
   }
-  public void setNewStage(){
+  public void setNewStage(Accounts ac){
+    
+    bankAmountField.setText(String.format("Balance: $%.2f",ac.getAccountBalance()));
+    AccountNumberField.setText(String.format("Account Number: %06d",ac.getAccountNumber()));
+    
     
     bankFunctionStage.show();
+    
+    
   }
   @Override
   public void stop(){
@@ -87,9 +99,10 @@ public class ATMGUI extends Application{
   
   //all areas for the bank function page
   private Stage bankFunctionStage = new Stage(); 
-  private TextField bankAmountField = new TextField();
+  private Label bankAmountField = new Label("");
+  private Label AccountNumberField = new Label("");
   private Panel buttonPanel = new Panel();
-  private static final String [] buttonText = {"7", "8", "9", "4", "5", "6", "1", "2","3", "0", "Withdraw", "Deposit"};
+  private static final String [] buttonText = {"7", "8", "9", "4", "5", "6", "1", "2","3", "0", "Withdraw", "Deposit","Log Out"};
   private Button [] buttons = new Button[buttonText.length];
   
   public static void main(String [] args){
@@ -103,6 +116,7 @@ public class ATMGUI extends Application{
       String un = userNameField.getText();
       String pw = passwordField.getText();
       short check = bank.checkCredentials(un, pw);
+      Accounts currentAccount;
       switch(check){
         case 0: 
           //credentials correct
@@ -111,8 +125,8 @@ public class ATMGUI extends Application{
           alert.setHeaderText(null);
           alert.setContentText("Login Success");
           alert.show();
-          Accounts currentAccount = bank.selectAccount(un);
-          setNewStage();
+          currentAccount = bank.selectAccount(un);
+          setNewStage(currentAccount);
           break;
         case 1:
           //password incorrect
@@ -136,9 +150,12 @@ public class ATMGUI extends Application{
             alert4.setHeaderText(null);
             alert4.setContentText("Account Creation Successful");
             alert4.showAndWait();
-            setNewStage();
+            currentAccount = bank.selectAccount(un);
+            setNewStage(currentAccount);
           }
       }
+    
+      
     }
     
   }
