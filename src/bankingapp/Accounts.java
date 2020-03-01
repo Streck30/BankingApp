@@ -41,5 +41,8 @@ public class Accounts {
   public void setPassword(String newPassword){
     Password = newPassword;
   }
+  public int getAccountNumber(){
+    return AccountNum;
+  }
           
 }
