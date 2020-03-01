@@ -171,9 +171,9 @@ public class ATMGUI extends Application {
         if (e.getSource() == buttons[buttonNums]) {
           toAddSub.setText(toAddSub.getText() + buttonText[buttonNums]);
         }
-        if(toAddSub.getText().length()==1){
-          toAddSub.setText(".0"+toAddSub.getText());
-        }
+//        if(toAddSub.getText().length()==1){
+//          toAddSub.setText(".0"+toAddSub.getText());
+//        }
       }
       //the button actions for the delete button
       if (e.getSource() == buttons[10]) {
