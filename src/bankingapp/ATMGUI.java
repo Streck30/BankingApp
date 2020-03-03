@@ -113,9 +113,10 @@ public class ATMGUI extends Application {
   private Label bankAmountField = new Label("");
   private Label AccountNumberField = new Label("");
   private Panel buttonPanel = new Panel();
-  private TextField toAddSub = new TextField("");
+  private TextField toAddSub = new TextField(".00");
   private static final String[] buttonText = {"7", "8", "9", "4", "5", "6", "1", "2", "3", "0", "Del", "Withdraw", "Deposit", "Log Out"};
   private Button[] buttons = new Button[buttonText.length];
+  private int numKeypress = 0;
 
   public static void main(String[] args) {
     bank.initBankApp();
@@ -168,12 +169,39 @@ public class ATMGUI extends Application {
       }
       //all the button actions for the numbers 0-9
       for (int buttonNums = 0; buttonNums < 10; buttonNums++) {
-        if (e.getSource() == buttons[buttonNums]) {
-          toAddSub.setText(toAddSub.getText() + buttonText[buttonNums]);
+         if (e.getSource() == buttons[buttonNums]) {
+           if(numKeypress == 1){
+            toAddSub.setText("."+toAddSub.getText().charAt(2)+buttonText[buttonNums]);
+            numKeypress++;
+          }
+           else if(numKeypress == 0){
+            toAddSub.setText(".0"+buttonText[buttonNums]);
+            numKeypress++;
+          }
+           else{
+             String tempNum = toAddSub.getText();
+             int tempIndex = tempNum.indexOf('.');
+             tempNum = "";
+             for(int i = 0; i < toAddSub.getText().length();i++){
+               if(i == toAddSub.getText().length()-1){
+                 tempNum+='.';
+               }
+               if(i != tempIndex){
+                 tempNum+= toAddSub.getText().charAt(i);
+               }
+               
+             }
+             tempNum+=buttonText[buttonNums];
+             toAddSub.setText(tempNum);
+             
+             numKeypress++;
+           }
         }
-//        if(toAddSub.getText().length()==1){
-//          toAddSub.setText(".0"+toAddSub.getText());
-//        }
+        
+       
+        
+        
+        
       }
       //the button actions for the delete button
       if (e.getSource() == buttons[10]) {
