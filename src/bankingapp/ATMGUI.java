@@ -61,14 +61,14 @@ public class ATMGUI extends Application {
     for (int i = 0; i < buttonText.length; i++) {
       buttons[i] = new Button(buttonText[i]);
     }
-    for(int i = 0; i < buttons.length;i++){
+    for (int i = 0; i < buttons.length; i++) {
       buttons[i].setOnAction(buttonHandler);
     }
     pane2.add(buttons[10], 2, 1);
     for (int i = 0; i < buttonText.length - 5; i++) {
       pane2.add(buttons[i], i % 3, i / 3 + 2);
     }
-    pane2.add(buttons[9],1,5);
+    pane2.add(buttons[9], 1, 5);
     for (int i = 0; i < 3; i++) {
       pane2.add(buttons[i + 11], i, 6);
     }
@@ -85,7 +85,8 @@ public class ATMGUI extends Application {
     bankFunctionStage.show();
 
   }
-  public void createAlert(String message, AlertType alertType){
+
+  public void createAlert(String message, AlertType alertType) {
     Alert alert = new Alert(alertType);
     alert.setTitle(null);
     alert.setHeaderText(null);
@@ -135,11 +136,11 @@ public class ATMGUI extends Application {
         switch (check) {
           case 0:
             //credentials correct
-            currentAccount = bank.selectAccount(un);           
+            currentAccount = bank.selectAccount(un);
             setNewStage();
             userNameField.setText("");
             passwordField.setText("");
-            createAlert("Login Success",AlertType.INFORMATION);
+            createAlert("Login Success", AlertType.INFORMATION);
             break;
           case 1:
             //password incorrect
@@ -169,78 +170,93 @@ public class ATMGUI extends Application {
       }
       //all the button actions for the numbers 0-9
       for (int buttonNums = 0; buttonNums < 10; buttonNums++) {
-         if (e.getSource() == buttons[buttonNums]) {
-           if(numKeypress == 1){
-            toAddSub.setText("."+toAddSub.getText().charAt(2)+buttonText[buttonNums]);
+        if (e.getSource() == buttons[buttonNums]) {
+          if (numKeypress == 1) {
+            toAddSub.setText("." + toAddSub.getText().charAt(2) + buttonText[buttonNums]);
+            numKeypress++;
+          } else if (numKeypress == 0) {
+            toAddSub.setText(".0" + buttonText[buttonNums]);
+            numKeypress++;
+          } else {
+            int tempIndex = toAddSub.getText().indexOf('.');
+            String tempNum = "";
+            for (int i = 0; i < toAddSub.getText().length(); i++) {
+              if (i == toAddSub.getText().length() - 1) {
+                tempNum += '.';
+              }
+              if (i != tempIndex) {
+                tempNum += toAddSub.getText().charAt(i);
+              }
+
+            }
+            tempNum += buttonText[buttonNums];
+            toAddSub.setText(tempNum);
+
             numKeypress++;
           }
-           else if(numKeypress == 0){
-            toAddSub.setText(".0"+buttonText[buttonNums]);
-            numKeypress++;
-          }
-           else{
-             String tempNum = toAddSub.getText();
-             int tempIndex = tempNum.indexOf('.');
-             tempNum = "";
-             for(int i = 0; i < toAddSub.getText().length();i++){
-               if(i == toAddSub.getText().length()-1){
-                 tempNum+='.';
-               }
-               if(i != tempIndex){
-                 tempNum+= toAddSub.getText().charAt(i);
-               }
-               
-             }
-             tempNum+=buttonText[buttonNums];
-             toAddSub.setText(tempNum);
-             
-             numKeypress++;
-           }
         }
-        
-       
-        
-        
-        
+
       }
       //the button actions for the delete button
       if (e.getSource() == buttons[10]) {
-        if(!toAddSub.getText().equals("")){
-        toAddSub.setText(toAddSub.getText().substring(0, toAddSub.getText().length() - 1));
+        String tempNum = "";
+        if (!toAddSub.getText().equals("")) {
+          int tempIndex = toAddSub.getText().indexOf('.');
+          for (int i = 0; i < toAddSub.getText().length()-1; i++) {
+            if (i == toAddSub.getText().length() - 4) {
+              tempNum += '.';
+            }
+            if (i != tempIndex) {
+              tempNum += toAddSub.getText().charAt(i);
+            }
+            
+
+          }
+          if(tempNum.length() == 0){
+            tempNum = ".00";
+          }
+          if(tempNum.length() == 1){
+            tempNum = ".0"+tempNum;
+          }
+          
+
+        }
+        toAddSub.setText(tempNum);
+        if(numKeypress > 0){
+          numKeypress--;
         }
       }
       //the button action for the withdrawal button
-      if(e.getSource() == buttons[11]){
-        if(toAddSub.getText().equals("")){
+      if (e.getSource() == buttons[11]) {
+        if (toAddSub.getText().equals("")) {
           createAlert("Please put a number to Withdraw", AlertType.ERROR);
           return;
         }
-        float atmCheck = atm.makeWithdrawal(Float.parseFloat(toAddSub.getText()),currentAccount );
+        float atmCheck = atm.makeWithdrawal(Float.parseFloat(toAddSub.getText()), currentAccount);
         toAddSub.setText("");
-        if(atmCheck == 0){
+        if (atmCheck == 0) {
           createAlert("Insufficient funds", AlertType.ERROR);
-        }
-        else{
-          createAlert(String.format("Successfully Withdrew: $%.2f", atmCheck),AlertType.INFORMATION);
+        } else {
+          createAlert(String.format("Successfully Withdrew: $%.2f", atmCheck), AlertType.INFORMATION);
           bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
-          
+
         }
-          
+
       }
       //the button action for the deposit button
-      if(e.getSource() == buttons[12]){
-        if(toAddSub.getText().equals("")){
-          createAlert("Please put a number to Deposit",AlertType.ERROR);
+      if (e.getSource() == buttons[12]) {
+        if (toAddSub.getText().equals("")) {
+          createAlert("Please put a number to Deposit", AlertType.ERROR);
           return;
         }
-        float depositCheck = atm.makeDeposit(Float.parseFloat(toAddSub.getText()),currentAccount );
+        float depositCheck = atm.makeDeposit(Float.parseFloat(toAddSub.getText()), currentAccount);
         toAddSub.setText("");
-        
-        createAlert(String.format("Successfully Deposited $%.2f", depositCheck),AlertType.INFORMATION);
+
+        createAlert(String.format("Successfully Deposited $%.2f", depositCheck), AlertType.INFORMATION);
         bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
-        
+
       }
-      if(e.getSource()==buttons[13]){
+      if (e.getSource() == buttons[13]) {
         createAlert("Logout Successful", AlertType.INFORMATION);
         bankFunctionStage.hide();
       }
