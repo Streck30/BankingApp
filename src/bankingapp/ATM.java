@@ -12,13 +12,17 @@ package bankingapp;
 public class ATM {
   public static float makeWithdrawal(float amount, Accounts account){
     if(amount > account.getAccountBalance()){
-      System.out.println("Insufficient Funds");
       return 0;
+    }
+    if(amount == 0){
+      return -1;
     }
     account.setAccountBalance(account.getAccountBalance()-amount);
     return amount;
   }
   public static float makeDeposit(float amount, Accounts account){
+    if(amount ==0)
+      return -1;
     account.setAccountBalance(account.getAccountBalance()+amount);
     return amount;
   }

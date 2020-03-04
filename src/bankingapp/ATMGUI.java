@@ -233,10 +233,15 @@ public class ATMGUI extends Application {
           return;
         }
         float atmCheck = atm.makeWithdrawal(Float.parseFloat(toAddSub.getText()), currentAccount);
-        toAddSub.setText("");
+        toAddSub.setText(".00");
+        numKeypress = 0;
         if (atmCheck == 0) {
           createAlert("Insufficient funds", AlertType.ERROR);
-        } else {
+        }
+        else if(atmCheck == -1){
+          createAlert("Please enter non-zero number", AlertType.ERROR);
+        }
+        else {
           createAlert(String.format("Successfully Withdrew: $%.2f", atmCheck), AlertType.INFORMATION);
           bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
 
@@ -250,11 +255,16 @@ public class ATMGUI extends Application {
           return;
         }
         float depositCheck = atm.makeDeposit(Float.parseFloat(toAddSub.getText()), currentAccount);
-        toAddSub.setText("");
+        toAddSub.setText(".00");
+        numKeypress = 0;
+        if(depositCheck == -1){
+          createAlert("Please enter a non-zero number", AlertType.ERROR);
+        }
+        else{
 
-        createAlert(String.format("Successfully Deposited $%.2f", depositCheck), AlertType.INFORMATION);
-        bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
-
+          createAlert(String.format("Successfully Deposited $%.2f", depositCheck), AlertType.INFORMATION);
+          bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
+        }
       }
       if (e.getSource() == buttons[13]) {
         createAlert("Logout Successful", AlertType.INFORMATION);
