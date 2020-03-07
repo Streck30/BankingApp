@@ -24,6 +24,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.awt.event.ActionListener;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -60,6 +62,13 @@ public class ATMGUI extends Application {
     pane2.add(toAddSub, 1, 1);
     pane2.add(AccountNumberField, 0, 0);
     pane2.setColumnSpan(AccountNumberField,3);
+    pane2.setOnKeyTyped(new EventHandler<KeyEvent>() 
+        {
+            public void handle(final KeyEvent keyEvent) 
+            {
+                buttonHandler.handleEvent(keyEvent);
+            }
+        });
     for (int i = 0; i < buttonText.length; i++) {
       buttons[i] = new Button(buttonText[i]);
       if(i < 10){
@@ -90,6 +99,7 @@ public class ATMGUI extends Application {
     AccountNumberField.setText(String.format("Account: %06d", currentAccount.getAccountNumber()));
 
     bankFunctionStage.show();
+    toAddSub.toFront();
 
   }
 
@@ -278,6 +288,17 @@ public class ATMGUI extends Application {
         bankFunctionStage.hide();
       }
 
+    }
+    public void handleEvent(KeyEvent e){
+      for(int i = 0; i < 10; i++){
+        if(e.getCharacter().equals(buttonText[i])){
+          buttons[i].fire();          
+        }
+      }
+      if(e.getCharacter().equals(KeyCode.BACK_SPACE)){
+        buttons[10].fire();
+      }
+      
     }
 
   }
