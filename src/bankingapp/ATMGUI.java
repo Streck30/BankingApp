@@ -295,7 +295,7 @@ public class ATMGUI extends Application {
           buttons[i].fire();          
         }
       }
-      if(e.getCharacter().equals(KeyCode.BACK_SPACE)){
+      if(e.getCode().equals(KeyCode.BACK_SPACE)){
         buttons[10].fire();
       }
       
