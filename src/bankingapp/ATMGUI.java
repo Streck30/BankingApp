@@ -62,7 +62,7 @@ public class ATMGUI extends Application {
     pane2.add(toAddSub, 1, 1);
     pane2.add(AccountNumberField, 0, 0);
     pane2.setColumnSpan(AccountNumberField,3);
-    pane2.setOnKeyTyped(new EventHandler<KeyEvent>() 
+    pane2.setOnKeyPressed(new EventHandler<KeyEvent>() 
         {
             public void handle(final KeyEvent keyEvent) 
             {
@@ -291,11 +291,11 @@ public class ATMGUI extends Application {
     }
     public void handleEvent(KeyEvent e){
       for(int i = 0; i < 10; i++){
-        if(e.getCharacter().equals(buttonText[i])){
+        if(e.getText().equals(buttonText[i])){
           buttons[i].fire();          
         }
       }
-      if(e.getCode().equals(KeyCode.BACK_SPACE)){
+      if(e.getCode() == KeyCode.BACK_SPACE){
         buttons[10].fire();
       }
       
