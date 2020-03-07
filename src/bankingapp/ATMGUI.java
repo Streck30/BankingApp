@@ -56,10 +56,17 @@ public class ATMGUI extends Application {
     pane2.setAlignment(Pos.CENTER);
     pane2.setPadding(new Insets(10, 10, 10, 10));
     pane2.add(bankAmountField, 0, 1);
+    toAddSub.setMaxWidth(75);
     pane2.add(toAddSub, 1, 1);
     pane2.add(AccountNumberField, 0, 0);
+    pane2.setColumnSpan(AccountNumberField,3);
     for (int i = 0; i < buttonText.length; i++) {
       buttons[i] = new Button(buttonText[i]);
+      if(i < 10){
+        buttons[i].setMinSize(75, 50);
+      }
+      else
+        buttons[i].setMinSize(75, 25);
     }
     for (int i = 0; i < buttons.length; i++) {
       buttons[i].setOnAction(buttonHandler);
@@ -79,8 +86,8 @@ public class ATMGUI extends Application {
 
   public void setNewStage() {
 
-    bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
-    AccountNumberField.setText(String.format("Account Number: %06d", currentAccount.getAccountNumber()));
+    bankAmountField.setText(String.format("Bal: $%.2f", currentAccount.getAccountBalance()));
+    AccountNumberField.setText(String.format("Account: %06d", currentAccount.getAccountNumber()));
 
     bankFunctionStage.show();
 
