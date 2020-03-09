@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import java.awt.event.ActionListener;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 
 /**
  *
@@ -58,10 +59,14 @@ public class ATMGUI extends Application {
     pane2.setAlignment(Pos.CENTER);
     pane2.setPadding(new Insets(10, 10, 10, 10));
     pane2.add(bankAmountField, 0, 1);
-    toAddSub.setMaxWidth(75);
-    pane2.add(toAddSub, 1, 1);
+    toAddSub.setMinSize(225,50);
+    toAddSub.setMaxSize(225,50);
+    toAddSub.setFont(Font.font("MS PGothic", 30));
+    pane2.add(toAddSub, 0, 2);
     pane2.add(AccountNumberField, 0, 0);
     pane2.setColumnSpan(AccountNumberField,3);
+    pane2.setColumnSpan(toAddSub, 3);
+    pane2.setColumnSpan(bankAmountField,3);
     pane2.setOnKeyPressed(new EventHandler<KeyEvent>() 
         {
             public void handle(final KeyEvent keyEvent) 
@@ -71,7 +76,7 @@ public class ATMGUI extends Application {
         });
     for (int i = 0; i < buttonText.length; i++) {
       buttons[i] = new Button(buttonText[i]);
-      if(i < 10){
+      if(i < 11){
         buttons[i].setMinSize(75, 50);
       }
       else
@@ -80,13 +85,13 @@ public class ATMGUI extends Application {
     for (int i = 0; i < buttons.length; i++) {
       buttons[i].setOnAction(buttonHandler);
     }
-    pane2.add(buttons[10], 2, 1);
+    pane2.add(buttons[10], 2, 6);
     for (int i = 0; i < buttonText.length - 5; i++) {
-      pane2.add(buttons[i], i % 3, i / 3 + 2);
+      pane2.add(buttons[i], i % 3, i / 3 + 3);
     }
-    pane2.add(buttons[9], 1, 5);
+    pane2.add(buttons[9], 1, 6);
     for (int i = 0; i < 3; i++) {
-      pane2.add(buttons[i + 11], i, 6);
+      pane2.add(buttons[i + 11], i, 7);
     }
     Scene scene2 = new Scene(pane2);
     bankFunctionStage.setScene(scene2);
@@ -95,7 +100,7 @@ public class ATMGUI extends Application {
 
   public void setNewStage() {
 
-    bankAmountField.setText(String.format("Bal: $%.2f", currentAccount.getAccountBalance()));
+    bankAmountField.setText(String.format("Balance: $%.2f", currentAccount.getAccountBalance()));
     AccountNumberField.setText(String.format("Account: %06d", currentAccount.getAccountNumber()));
 
     bankFunctionStage.show();
